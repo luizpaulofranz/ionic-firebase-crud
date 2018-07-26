@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
 
+import { map } from 'rxjs/operators';
+
 import { ShoppingListService } from './../../services/shopping-list/shopping-list.service';
 import { Observable } from 'rxjs/Observable';
 import { Item } from '../../models/item/item.model';
@@ -24,19 +26,17 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.shoppingList$ = this.shopping
     .getShoppingList() // returns a firebase DB List
-    /*.snapshotChanges() //returns key => value pairs of that chamged list from DB
-    .subscribe(changes => {
-      return changes.map(change => {
-        let retorno = {
-          key: change.payload.key,
-          ...change.payload.val()
-        };
-        console.log(retorno);
-        return retorno;
-      });
-    });*/
-    .valueChanges();
-    console.log(this.shoppingList$);
+    // if we just want to show the data, .valueChanges() is all we need
+    .snapshotChanges() // all of this to retrieve data and metadata (which mantains database reference to updates)
+    .pipe(
+      map(items => {            // <== new way of chaining
+        return items.map(a => {
+          const data = a.payload.val();
+          const key = a.payload.key;
+          return {key, ...data};           // or {key, ...data} in case data is Obj
+        });
+    }));
+    //console.log(this.shoppingList$);
   }
 
 }
