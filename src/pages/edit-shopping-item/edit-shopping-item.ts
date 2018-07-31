@@ -35,4 +35,13 @@ export class EditShoppingItemPage {
     );
   }
 
+  removeItem(item: Item){
+    this.service.removeItem(item).then(
+      () => {
+        this.toast.show(`${item.name} was successfully Removed!`)
+        this.navCtrl.setRoot('HomePage')
+      }
+    );
+  }
+
 }
