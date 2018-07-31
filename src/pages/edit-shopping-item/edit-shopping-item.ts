@@ -1,12 +1,8 @@
+import { Item } from './../../models/item/item.model';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the EditShoppingItemPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { ShoppingListService } from '../../services/shopping-list/shopping-list.service';
 
 @IonicPage()
 @Component({
@@ -15,11 +11,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class EditShoppingItemPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  item: Item
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private service: ShoppingListService) {
   }
 
-  ionViewDidLoad() {
-    console.log(this.navParams.get('item'));
+  ionViewWillLoad() {
+    // that's how we get a param from another page
+    this.item = this.navParams.get('item');
+  }
+
+  saveItem(item: Item){
+    this.service.editItem(item).then(
+      () => {this.navCtrl.setRoot('HomePage')}
+    );
   }
 
 }
