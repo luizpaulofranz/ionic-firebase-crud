@@ -26,6 +26,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.shoppingList$ = this.shopping
     .getShoppingList() // returns a firebase DB List
+    //.valueChanges()
     // if we just want to show the data, .valueChanges() is all we need
     .snapshotChanges() // all of this to retrieve data and metadata (which mantains database reference to updates)
     .pipe(

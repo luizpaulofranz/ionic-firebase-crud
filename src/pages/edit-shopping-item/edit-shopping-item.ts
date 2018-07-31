@@ -1,3 +1,4 @@
+import { ToastService } from './../../services/toast/toast.service';
 import { Item } from './../../models/item/item.model';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -16,7 +17,8 @@ export class EditShoppingItemPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private service: ShoppingListService) {
+    private service: ShoppingListService,
+    private toast: ToastService) {
   }
 
   ionViewWillLoad() {
@@ -26,7 +28,10 @@ export class EditShoppingItemPage {
 
   saveItem(item: Item){
     this.service.editItem(item).then(
-      () => {this.navCtrl.setRoot('HomePage')}
+      () => {
+        this.toast.show(`${item.name} was saved successfully!`)
+        this.navCtrl.setRoot('HomePage')
+      }
     );
   }
 
